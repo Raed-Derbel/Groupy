@@ -512,11 +512,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/media/raed/DATA/ITBS/FINAL/Groupy/Groupy.csproj",
+      "projectUniqueName": "/media/raed/DATA/ITBS/CS-PROJECTS/Groupy/Groupy/Groupy.csproj",
       "projectName": "Groupy",
-      "projectPath": "/media/raed/DATA/ITBS/FINAL/Groupy/Groupy.csproj",
+      "projectPath": "/media/raed/DATA/ITBS/CS-PROJECTS/Groupy/Groupy/Groupy.csproj",
       "packagesPath": "/home/raed/.nuget/packages/",
-      "outputPath": "/media/raed/DATA/ITBS/FINAL/Groupy/obj/",
+      "outputPath": "/media/raed/DATA/ITBS/CS-PROJECTS/Groupy/Groupy/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/raed/.nuget/NuGet/NuGet.Config"
