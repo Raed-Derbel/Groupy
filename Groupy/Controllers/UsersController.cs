@@ -187,4 +187,105 @@ public class UsersController : ControllerBase
         return true;
     }
 
+    [HttpGet]
+    [Route("getTeam")] 
+    public Team getTeamPost(long id)
+    {
+        var found = teams.Find(i => i.Id == id);
+        if (found != null) {
+        return found;
+        }
+        return new Team();
+    }
+
+    [HttpPost]
+    [Route("updateTeam")] 
+    public Boolean updateTeam(Team team)
+    {
+        var found = teams.Find(i => i.Id == team.Id);
+        if (found != null) {
+            teams.Remove(found);
+            teams.Add(team);
+            return true;
+        } 
+        return false;
+    }
+
+    [HttpGet]
+    [Route("getTeamMembers")]
+    public List<User> getTeamMembers(long id)
+    {
+        List<UserRoleInTeam> results = userRolesTeams.FindAll(
+        delegate(UserRoleInTeam item)
+        {
+            return item.TeamId == id;
+        }
+        );
+        List<User> Response = new List<User>();
+        foreach (var item in results)
+        {
+            Response.Add(users.Find(i => i.Id == id));
+        }
+        return Response;
+    }
+
+    [HttpGet]
+    [Route("addTeamMember")]
+    public Boolean addTeamMember(long idTeam, long idMember)
+    {
+        UserRoleInTeam tmp = new UserRoleInTeam();
+        tmp.TeamId = idTeam;
+        tmp.UserId = idMember;
+        userRolesTeams.Add(tmp);
+        return true;
+    }
+
+    [HttpGet]
+    [Route("removeTeamMember")] 
+    public Boolean removeTeamMember(long teamId, long userId)
+    {
+        var found = userRolesTeams.Find(i => (i.TeamId == teamId && i.UserId == userId) );
+        if (found != null) {
+            userRolesTeams.Remove(found);
+            return true;
+        } 
+        return false;
+    }
+
+    [HttpPost]
+    [Route("createTask")] 
+    public Boolean createTask(Tasks task)
+    {
+        task.Id = tasks.Count + 1;
+        tasks.Add(task);
+        return true;
+    }
+
+    [HttpPost]
+    [Route("updateTask")] 
+    public Boolean updateTask(Tasks task)
+    {
+        var found = tasks.Find(i => i.Id == task.Id);
+        if (found != null) {
+            tasks.Remove(found);
+            tasks.Add(task);
+            return true;
+        } 
+        return false;
+    }
+
+    [HttpGet]
+    [Route("getTeamTasks")]
+    public List<Tasks> getTeamTasks(long id)
+    {
+        List<Tasks> Response = new List<Tasks>();
+        foreach (var item in tasks)
+        {
+           if (item.TeamId == id) {
+            Response.Add(item);
+           }
+        }
+        return Response;
+    }
+
 }
