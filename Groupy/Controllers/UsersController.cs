@@ -21,34 +21,51 @@ public class UsersController : ControllerBase
 
   
 
-    [HttpGet(Name = "users")]
+    [HttpGet]
+    [Route("users")] 
     public List<User> Get()
     {
         return users;
     }
 
     [HttpGet]
+    [Route("teams")] 
+    public List<Team> getTeams()
+    {
+        return teams;
+    }
+
+    [HttpGet]
+    [Route("userRolesTeams")] 
+    public List<UserRoleInTeam> getuserRolesTeams()
+    {
+        return userRolesTeams;
+    }
+
+    [HttpGet]
     [Route("roles")] 
     public List<Role> getRoles()
     {
-        roles.Clear();
-        Role memberRole = new Role(0, "Member");
-        roles.Add(memberRole);
-        memberRole = new Role(1, "Super-Member");
-        roles.Add(memberRole);
-        memberRole = new Role(2, "Supervisor");
-        roles.Add(memberRole);
+       initRoles();
         return roles;
+    }
+
+    [HttpGet]
+    [Route("tasks")] 
+    public List<Tasks> getTasks()
+    {
+        return tasks;
     }
 
     [HttpPost]
     [Route("login")] 
-    public Boolean Login(User user)
+    public long Login(User user)
     {
-        if (users.Find(i => (i.Username == user.Username && i.Password == user.Password )) != null) {
-            return true;
+        var found = users.Find(i => (i.Username == user.Username && i.Password == user.Password));
+        if (found != null) {
+            return (long)found.Id;
         } 
-        return false;
+        return -1;
     }
 
     [HttpPost]
@@ -113,13 +130,7 @@ public class UsersController : ControllerBase
     [Route("getRole")] 
     public Role getRole(long id)
     {
-        roles.Clear();
-        Role memberRole = new Role(0, "Member");
-        roles.Add(memberRole);
-        memberRole = new Role(1, "Super-Member");
-        roles.Add(memberRole);
-        memberRole = new Role(2, "Supervisor");
-        roles.Add(memberRole);
+       initRoles();
         var found = roles.Find(i => i.Id == id);
         if (found != null) {
         return found;
@@ -127,4 +138,53 @@ public class UsersController : ControllerBase
         return new Role(0, "No role");
     }
    
+    [HttpPost]
+    [Route("setUserRoleInTeam")] 
+    public Boolean setUserRole(UserRoleInTeam userRoleTeam)
+    {
+        var found = userRolesTeams.Find(i => (i.UserId == userRoleTeam.UserId));
+        if (found != null) {
+            userRolesTeams.Remove(found);
+        }
+        userRolesTeams.Add(userRoleTeam);
+        return true;
+    }
+
+    [HttpGet]
+    [Route("getUserRoleInTeam")] 
+    public Role getUserRole(long id, long idTeam)
+    {
+        UserRoleInTeam found = userRolesTeams.Find(i => (i.UserId == id && i.TeamId == idTeam));
+        if (found != null) {
+            return findRole(found.RoleId);
+        }
+        return new Role(-1, "No role found");
+    }
+
+    private Role findRole(long id)
+    {
+        initRoles();
+        return roles.Find(i => i.Id == id);
+    }
+
+    private void initRoles()
+    {
+         roles.Clear();
+        Role memberRole = new Role(0, "Member");
+        roles.Add(memberRole);
+        memberRole = new Role(1, "Super-Member");
+        roles.Add(memberRole);
+        memberRole = new Role(2, "Supervisor");
+        roles.Add(memberRole);
+    }
+
+    [HttpPost]
+    [Route("createTeam")] 
+    public Boolean createTeam(Team team)
+    {
+        team.Id = teams.Count + 1;
+        teams.Add(team);
+        return true;
+    }
+
 }
