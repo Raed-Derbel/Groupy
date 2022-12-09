@@ -26,6 +26,8 @@ namespace Groupy.Models
     [DataContract]
     public partial class Role : IEquatable<Role>
     { 
+
+       
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
@@ -40,6 +42,11 @@ namespace Groupy.Models
         [DataMember(Name="name")]
         public string Name { get; set; }
 
+
+        public Role(long id, string name) {
+            Id = id;
+            Name = name;
+        }
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
