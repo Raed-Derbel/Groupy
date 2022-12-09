@@ -27,20 +27,20 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route("login")] 
-    public User Login(User user)
+    public Boolean Login(User user)
     {
         if (users.Find(i => i.Username == user.Username) != null) {
-            return user;
+            return true;
         } 
-        return new User();
+        return false;
     }
 
     [HttpPost]
     [Route("register")] 
-    public User Register(User user)
+    public Boolean Register(User user)
     {
         users.Add(user);
-        return user;
+        return true;
     }
 
     [HttpGet]
