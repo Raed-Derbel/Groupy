@@ -17,14 +17,9 @@ public class UsersController : ControllerBase
     private static List<Team> teams = new List<Team>();
     private static List<UserRoleInTeam> userRolesTeams = new List<UserRoleInTeam>();
     private static List<Role> roles = new List<Role>();
-    
     private static List<Tasks> tasks = new List<Tasks>();
 
-    static void Main()
-    {
-    Role memberRole = new Role(0, "Member");
-    roles.Add(memberRole);
-    }
+  
 
     [HttpGet(Name = "users")]
     public List<User> Get()
@@ -36,6 +31,13 @@ public class UsersController : ControllerBase
     [Route("roles")] 
     public List<Role> getRoles()
     {
+        roles.Clear();
+        Role memberRole = new Role(0, "Member");
+        roles.Add(memberRole);
+        memberRole = new Role(1, "Super-Member");
+        roles.Add(memberRole);
+        memberRole = new Role(2, "Supervisor");
+        roles.Add(memberRole);
         return roles;
     }
 
@@ -111,6 +113,13 @@ public class UsersController : ControllerBase
     [Route("getRole")] 
     public Role getRole(long id)
     {
+        roles.Clear();
+        Role memberRole = new Role(0, "Member");
+        roles.Add(memberRole);
+        memberRole = new Role(1, "Super-Member");
+        roles.Add(memberRole);
+        memberRole = new Role(2, "Supervisor");
+        roles.Add(memberRole);
         var found = roles.Find(i => i.Id == id);
         if (found != null) {
         return found;
